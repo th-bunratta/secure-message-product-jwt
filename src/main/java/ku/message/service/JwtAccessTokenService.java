@@ -2,6 +2,7 @@
 
 package ku.message.service;
 
+import ku.message.dto.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -48,14 +49,15 @@ public class JwtAccessTokenService {
 
         HttpEntity entity = new HttpEntity(requestBody, headers);
 
-        ResponseEntity<String> response =
+        ResponseEntity<JwtResponse> response =
                 restTemplate.exchange(issuer + "oauth/token",
                         HttpMethod.POST,
-                        entity, String.class);
+                        entity, JwtResponse.class);
 
-        String jwtResponse = response.getBody();
+        JwtResponse jwtResponse = response.getBody();
+        token = jwtResponse.getAccessToken();
 
-        return jwtResponse;
+        return token;
     }
 }
 
